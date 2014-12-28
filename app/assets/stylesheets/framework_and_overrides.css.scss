@@ -1,7 +1,10 @@
 // import the CSS framework
 @import "bootstrap";
 
-$navbar-default-bg: gray;
+$navbar-inverse-bg: navy;
+.navbar-inverse {
+  background-color: $navbar-inverse-bg;
+}
 
 // make all images responsive by default
 img {

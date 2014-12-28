@@ -1,4 +1,5 @@
 module DoorkeeperApiV1
+
   private
 
   def access_token
@@ -15,6 +16,10 @@ module DoorkeeperApiV1
 
   def get_roles
     access_token.get("/api/v1/roles.json").parsed
+  end
+
+  def get_salons
+    access_token.get("/api/v1/salons.json").parsed
   end
 
   def delete_session

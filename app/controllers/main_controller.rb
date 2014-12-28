@@ -22,4 +22,22 @@ class MainController < ApplicationController
   rescue OAuth2::Error
     redirect_to root_url, alert: "Delete Session error"
   end
+
+  def salons
+    result = get_salons
+    @a = result
+    puts @a
+      redirect_to root_path, notice: "Funziona API Salons"
+  rescue OAuth2::Error
+    redirect_to root_url, alert: "Delete Session error"
+  end
+
+  def me
+    result = get_me
+    @a = result
+    puts @a
+    redirect_to root_path, notice: "Funziona API ME"
+  rescue OAuth2::Error
+    redirect_to root_url, alert: "Delete Session error"
+  end
 end
