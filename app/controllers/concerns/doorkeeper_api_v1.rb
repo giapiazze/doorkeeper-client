@@ -23,6 +23,7 @@ module DoorkeeperApiV1
   end
 
   def delete_session
-    access_token.get("/api/v1/delete").parsed
+    # access_token.get("/api/v1/delete").parsed
+    access_token.get("/oauth/token/info").parsed
   end
 end

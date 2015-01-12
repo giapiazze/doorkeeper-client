@@ -1,12 +1,7 @@
 class MainController < ApplicationController
   include DoorkeeperApiV1
-  skip_filter :auto_authenticate_omniauth_user!
+  before_filter :auto_authenticate_omniauth_user!
 
-  # def index
-  #  @me = get_me
-  #  @roles = get_roles
-    #@microposts = get_microposts
-  # end
 
   def delete
     result = delete_session
@@ -25,9 +20,8 @@ class MainController < ApplicationController
 
   def salons
     result = get_salons
-    @a = result
-    puts @a
-      redirect_to root_path, notice: "Funziona API Salons"
+    puts result
+    redirect_to root_path, notice: "Funziona API Salons"
   rescue OAuth2::Error
     redirect_to root_url, alert: "Delete Session error"
   end
