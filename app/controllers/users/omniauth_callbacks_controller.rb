@@ -7,26 +7,30 @@ module Users
     def doorkeeper
       # You need to implement the method below in your model (e.g. app/models/user.rb)
       raw_info = request.env['omniauth.strategy'].raw_info
-      admin_roles = raw_info['admin_roles']
+      roles = raw_info['roles_for_application']
       oauth_data = request.env['omniauth.auth']
-      @user = User.find_or_create_for_doorkeeper_oauth(oauth_data, admin_roles)
-      session[:doorkeeper_token] = oauth_data['credentials']['token']
-      session[:user_id] = @user.id
-      current_user = @user
-
-      if @user.persisted?
-        sign_in_and_redirect @user, :event => :authentication #this will throw if @user is not activated
-        if is_navigational_format?
-          set_flash_message(:notice, :success, kind: ENV['DOORKEEPER_APP_NAME'] || 'Doorkeeper')
-          # hide flash message after auto sign in
-          #flash.delete(:notice)
-        end
+      if roles.empty?
+        redirect_to root_url, :alert => 'Il tuo utente non può usare questa applicazione!'
       else
-        session['devise.doorkeeper_data'] = request.env['omniauth.auth']
-        if respond_to?(:new_user_registration_url)
-          redirect_to new_user_registration_url
+        @user = User.find_or_create_for_doorkeeper_oauth(oauth_data, roles)
+        session[:doorkeeper_token] = oauth_data['credentials']['token']
+        session[:user_id] = @user.id
+        current_user = @user
+
+        if @user.persisted?
+          sign_in_and_redirect @user, :event => :authentication #this will throw if @user is not activated
+          if is_navigational_format?
+            set_flash_message(:notice, :success, kind: ENV['DOORKEEPER_APP_NAME'] || 'Doorkeeper')
+            # hide flash message after auto sign in
+            #flash.delete(:notice)
+          end
         else
-          redirect_to root_url
+          session['devise.doorkeeper_data'] = request.env['omniauth.auth']
+          if respond_to?(:new_user_registration_url)
+            redirect_to new_user_registration_url
+          else
+            redirect_to root_url
+          end
         end
       end
     end
