@@ -3,6 +3,7 @@
     <li><%= link_to 'Salons', main_salons_path %></li>
     <li><%= link_to 'Me', main_me_path %></li>
     <li><%= link_to 'Log out', main_delete_path %></li>
+    <li><%= link_to 'Log out SSO', destroy_user_session_path %></li>
     <li><%= link_to current_user.name %> </li>
 <% else %>
     <li><%= link_to 'Log in with SSO', user_omniauth_authorize_path(:doorkeeper) %></li>
